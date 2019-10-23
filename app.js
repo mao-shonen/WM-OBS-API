@@ -11,11 +11,11 @@ app.all('/', (req, res) => {
 })
 
 app.all('/:server/SetCurrentScene/:scene', (req, res) => {
-    let server = config.servers[req.params.server] || req.params.server
+    let server_ip = config.servers[req.params.server] || req.params.server
 
     obs = new OBSWebSocket()
     obs.connect({
-            address: server,
+            address: server_ip,
         })
         .then(() => {
             return obs.send('SetCurrentScene', {

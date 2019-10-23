@@ -24,7 +24,7 @@ app.all('/:server/SetCurrentScene/:scene', (req, res) => {
         })
         .then((data) => {
             obs.disconnect()
-            console.log(`${server} changed scene to ${req.params.scene}`)
+            console.log(`${req.params.server} changed scene to ${req.params.scene}`)
             res.send(data)
         })
         .catch((err) => {

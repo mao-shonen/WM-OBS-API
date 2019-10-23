@@ -1,17 +1,21 @@
+const fs = require('fs')
 const OBSWebSocket = require('obs-websocket-js')
 const express = require('express')
+var config = fs.existsSync('config.js') ? require('./config') : {}
 
 var app = express()
-var port = process.argv[2] || 3000
+var port = process.argv[2] || config.port || 3000
 
 app.all('/', (req, res) => {
     res.status(400).send('POST /{OBS IP:port}/SetCurrentScene/{scene name}')
 })
 
-app.post('/:ip/SetCurrentScene/:scene', (req, res) => {
+app.all('/:server/SetCurrentScene/:scene', (req, res) => {
+    let server = config.servers[req.params.server] || req.params.server
+
     obs = new OBSWebSocket()
     obs.connect({
-            address: req.params.ip,
+            address: server,
         })
         .then(() => {
             return obs.send('SetCurrentScene', {
@@ -20,7 +24,7 @@ app.post('/:ip/SetCurrentScene/:scene', (req, res) => {
         })
         .then((data) => {
             obs.disconnect()
-            console.log(`${req.params.ip} changed scene to ${req.params.scene}`)
+            console.log(`${server} changed scene to ${req.params.scene}`)
             res.send(data)
         })
         .catch((err) => {

@@ -16,5 +16,5 @@ node app.js 3000
 ## 使用
 切換場景
 ```http
-POST http://127.0.0.1:3000/{OBS IP:port}/SetCurrentScene/{scene name}}
+POST http://127.0.0.1:3000/{OBS_IP_and_port}/SetCurrentScene/{scene_name}}
 ```
